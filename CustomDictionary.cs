@@ -12,4 +12,17 @@ public static class CustomDictionary
         }
         return dict;
     }
+
+    public static Dictionary<int, List<int>> Add(Dictionary<int, List<int>> dict, int i, List<int> list)
+    {
+        if (!dict.Keys.Contains(i))
+        {
+            dict.Add(i, list);
+        }
+        else
+        {
+            dict[i] = list;
+        }
+        return dict;
+    }
 }

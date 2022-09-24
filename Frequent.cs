@@ -25,8 +25,16 @@ public static class Frequent
 
             if (!discarded_before)
             {
-                int count = count_occurences(itemsets[s], transactions);
-                // ! write count occurences and complete this function
+                int count = Count_Occurence.count_occurences(itemsets[s], transactions);
+                if ((double)count / (double)transactions.Count >= min_support)
+                {
+                    L.Add(itemsets[s]);
+                    supp_count.Add(count);
+                }
+                else
+                {
+                    new_discarded.Add(itemsets[s]);
+                }
             }
         }
 
