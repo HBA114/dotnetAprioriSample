@@ -12,12 +12,13 @@
     return transactions;
 }
 
-int CountOccurences(String itemset, List<List<String>> transactions)
+int CountOccurences(List<String> itemset, List<List<String>> transactions)
 {
     int count = 0;
     for (int i = 0; i < transactions.Count; i++)
     {
-        if (transactions[i].Contains(itemset))
+        // ! ???????????????????????????????????????????????
+        if (transactions[i].Any(_t => itemset.Any(_i => _i == _t)))
         {
             count++;
         }
@@ -25,11 +26,11 @@ int CountOccurences(String itemset, List<List<String>> transactions)
     return count;
 }
 
-(List<String>, List<int>, List<String>) GetFrequent(List<String> itemsets, List<List<String>> transactions, double min_support, Dictionary<int, List<String>> prev_discarded)
+(List<List<String>>, List<int>, List<List<String>>) GetFrequent(List<List<String>> itemsets, List<List<String>> transactions, double min_support, Dictionary<int, List<List<String>>> prev_discarded)
 {
-    var L = new List<String>();
+    var L = new List<List<String>>();
     var supp_count = new List<int>();
-    var new_discarded = new List<String>();
+    var new_discarded = new List<List<String>>();
 
     var k = prev_discarded.Keys.Count;
 
@@ -40,7 +41,7 @@ int CountOccurences(String itemset, List<List<String>> transactions)
         {
             foreach (var it in prev_discarded[k])
             {
-                if (itemsets[i].Contains(it))
+                if (itemsets[i].Any(_itemset => it.Any(_it => _it == _itemset)))
                 {
                     discarded_before = true;
                     break;
@@ -66,7 +67,7 @@ int CountOccurences(String itemset, List<List<String>> transactions)
     return (L, supp_count, new_discarded);
 }
 
-List<String> JoinTwoItemSets(List<String> it1, List<String> it2, List<String> order)
+List<String> JoinTwoItemSets(List<String> it1, List<String> it2, List<List<String>> order)
 {
     // ! it1.sort(key=lambda x: order.index(x))
     // ! it2.sort(key=lambda x: order.index(x))
@@ -74,7 +75,7 @@ List<String> JoinTwoItemSets(List<String> it1, List<String> it2, List<String> or
     return new List<String>();
 }
 
-List<List<String>> JoinSetItems(List<List<String>> set_of_its, List<String> order)
+List<List<String>> JoinSetItems(List<List<String>> set_of_its, List<List<String>> order)
 {
     var C = new List<List<String>>();
 
@@ -96,13 +97,13 @@ List<List<String>> JoinSetItems(List<List<String>> set_of_its, List<String> orde
 
 var transactions = LoadTransactions("data_1.txt");
 
-var order = new List<String>() { "i1", "i2", "i3", "i4", "i5" };
+var order = new List<List<String>>() { new List<String>() { "i1", "i2", "i3", "i4", "i5" } };
 
-var C = new Dictionary<int, List<String>>();
-var L = new Dictionary<int, List<String>>();
+var C = new Dictionary<int, List<List<String>>>();
+var L = new Dictionary<int, List<List<String>>>();
 
 var itemset_size = 1;
-var Discarded = new Dictionary<int, List<String>>();
+var Discarded = new Dictionary<int, List<List<String>>>();
 C.Add(itemset_size, order);
 // System.Console.WriteLine(C[itemset_size]);
 
@@ -121,12 +122,17 @@ Discarded.Add(itemset_size, new_discarded);
 L.Add(itemset_size, f);
 supp_count_L.Add(itemset_size, sup);
 
-void WriteTable(List<String> T, List<int> supp_count)
+void WriteTable(List<List<String>> T, List<int> supp_count)
 {
     System.Console.WriteLine("Itemset  |  Frequancy");
     for (int i = 0; i < T.Count; i++)
     {
-        System.Console.WriteLine("[" + T[i] + "]    :    " + supp_count[i]);
+        System.Console.WriteLine("sup_count_size : " + supp_count.Count);
+        // System.Console.WriteLine("[" + T[i] + "]    :    " + supp_count[i]);
+        for (int j = 0; j < T[i].Count; j++)
+        {
+            System.Console.WriteLine(" '" + T[i][j] + "'    :    " + supp_count[i]);
+        }
     }
 }
 
@@ -135,11 +141,21 @@ WriteTable(L[1], supp_count_L[1]);
 var k = itemset_size + 1;
 var convergence = false;
 
-while (!convergence)
-{
-    // ! C.Add has a problem
-    C.Add(k, JoinSetItems(L[k - 1], order));
-    System.Console.WriteLine("Table C" + k);
-    // ! print_table(C[k], [count_occurences(it, transactions) for it in C[k]])
-    // WriteTable(C[k], CountOccurences())
-}
+// while (!convergence)
+// {
+//     // ! C.Add has a problem
+//     try
+//     {
+//         C.Add(k, JoinSetItems(L[k - 1], order));
+//     }
+//     catch (System.ArgumentException e)
+//     {
+//         if (e.Message.Contains("same key"))
+//         {
+//             C[k] = JoinSetItems(L[k - 1], order);
+//         }
+//     }
+//     System.Console.WriteLine("Table C" + k);
+//     // ! print_table(C[k], [count_occurences(it, transactions) for it in C[k]])
+//     // WriteTable(C[k], CountOccurences())
+// }
