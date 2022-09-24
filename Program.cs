@@ -64,6 +64,52 @@ bool convergence = false;
 
 while (!convergence)
 {
-    C = CustomDictionary.Add(C, k, SetItems.JoinItemSets(L[k-1], order));
-    convergence = true;
+    C = CustomDictionary.Add(C, k, SetItems.JoinItemSets(L[k - 1], order));
+    System.Console.WriteLine("Table C{0}", k);
+    List<int> temp_sup_count = new List<int>();
+    for (int i = 0; i < C[k].Count; i++)
+    {
+        temp_sup_count.Add(Count_Occurence.count_occurences(C[k][i], transactions));
+    }
+    WriteTable(C[k], temp_sup_count);
+
+    frequent = Frequent.GetFrequent(C[k], transactions, min_support, Discarded);
+    f = frequent.Item1;
+    sup = frequent.Item2;
+    new_discarded = frequent.Item3;
+
+    Discarded = CustomDictionary.Add(Discarded, k, new_discarded);
+    L = CustomDictionary.Add(L, k, f);
+    supp_count_L = CustomDictionary.Add(supp_count_L, k, sup);
+    if (L[k].Count == 0)
+    {
+        convergence = true;
+    }
+    else
+    {
+        System.Console.WriteLine("Table L{0}", k);
+        WriteTable(L[k], supp_count_L[k]);
+    }
+    k++;
+}
+
+List<Tuple<String>> powerset(List<String> s)
+{
+    List<int> r = new List<int>();
+    for (int i = 1; i < s.Count + 1; i++)
+    {
+        r.Add(i);
+    }
+
+    // How to do all combinations with items in s count in r
+}
+
+String assoc_rules = "";
+
+for (int i = 1; i < L.Count; i++)
+{
+    for (int j = 0; j < L[i].Count; j++)
+    {
+        List<Tuple<String>> s = powerset(L[i][j]);
+    }
 }
