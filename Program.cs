@@ -58,3 +58,12 @@ void WriteTable(List<List<String>> T, List<int> supp_count)
 }
 
 WriteTable(L[1], supp_count_L[1]);
+
+int k = itemset_size + 1;
+bool convergence = false;
+
+while (!convergence)
+{
+    C = CustomDictionary.Add(C, k, SetItems.JoinItemSets(L[k-1], order));
+    convergence = true;
+}
