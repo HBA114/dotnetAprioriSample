@@ -95,12 +95,14 @@ while (!convergence)
 
 List<Tuple<String>> powerset(List<String> s)
 {
+    List<Tuple<String>> result = new List<Tuple<String>>();
     List<int> r = new List<int>();
-    for (int i = 1; i < s.Count + 1; i++)
-    {
-        r.Add(i);
-    }
-
+    // for (int i = 1; i < s.Count + 1; i++)
+    // {
+    //     r.Add(i);
+    // }
+    // use Enumerable.Range
+    r = Enumerable.Range(1,s.Count+1).ToList(); // ! ??
     // How to do all combinations with items in s count in r
 }
 
