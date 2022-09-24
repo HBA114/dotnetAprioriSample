@@ -74,7 +74,7 @@ List<String> JoinTwoItemSets(List<String> it1, List<String> it2, List<String> or
     return new List<String>();
 }
 
-List<String> JoinSetItems(List<List<String>> set_of_its, List<String> order)
+List<List<String>> JoinSetItems(List<List<String>> set_of_its, List<String> order)
 {
     var C = new List<List<String>>();
 
@@ -90,7 +90,7 @@ List<String> JoinSetItems(List<List<String>> set_of_its, List<String> order)
         }
     }
 
-    // ! return C;
+    return C;
 }
 
 
