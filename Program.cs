@@ -93,9 +93,9 @@ while (!convergence)
     k++;
 }
 
-List<Tuple<String>> powerset(List<String> s)
+List<Tuple<List<String>>> powerset(List<String> s)
 {
-    List<Tuple<String>> result = new List<Tuple<String>>();
+    List<Tuple<List<String>>> result = new List<Tuple<List<String>>>();
     List<int> r = Enumerable.Range(1, s.Count + 1).ToList(); // ! ??
 
     // How to do all combinations with items in s count in r
@@ -106,21 +106,20 @@ List<Tuple<String>> powerset(List<String> s)
     // ! s is :  ['i1', 'i2', 'i3']
     // ! result is :  [('i1',), ('i2',), ('i3',), ('i1', 'i2'), ('i1', 'i3'), ('i2', 'i3'), ('i1', 'i2', 'i3')]
 
-    for (int i = 0; i < s.Count - 1; i++)
-    {
-        Tuple<String> _tuple;
-        for (int j = i + 1; j < s.Count; j++)
-        {
-        }
-
-        result.Add(_tuple);
-    }
-
-    // Tuple<String, String> _tuple;
     foreach (String item in s)
     {
-        result.Add(new Tuple<string>(item));
+        result.Add(new Tuple<List<String>>(new List<String>() { item }));
     }
+
+    for (int i = 0; i < s.Count - 1; i++)
+    {
+        for (int j = i + 1; j < s.Count; j++)
+        {
+            result.Add(new Tuple<List<String>>(new List<String>() { s[i], s[j] }));
+        }
+    }
+    // this makes 2 element combination
+    // add 3 element combinations
 
     return result;
 }
@@ -131,6 +130,6 @@ for (int i = 1; i < L.Count; i++)
 {
     for (int j = 0; j < L[i].Count; j++)
     {
-        List<Tuple<String>> s = powerset(L[i][j]);
+        List<Tuple<List<String>>> s = powerset(L[i][j]);
     }
 }
