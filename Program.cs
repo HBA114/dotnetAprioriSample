@@ -96,14 +96,33 @@ while (!convergence)
 List<Tuple<String>> powerset(List<String> s)
 {
     List<Tuple<String>> result = new List<Tuple<String>>();
-    List<int> r = new List<int>();
-    // for (int i = 1; i < s.Count + 1; i++)
-    // {
-    //     r.Add(i);
-    // }
-    // use Enumerable.Range
-    r = Enumerable.Range(1,s.Count+1).ToList(); // ! ??
+    List<int> r = Enumerable.Range(1, s.Count + 1).ToList(); // ! ??
+
     // How to do all combinations with items in s count in r
+
+    // ! s is :  ['i1', 'i2']
+    // ! result is :  [('i1',), ('i2',), ('i1', 'i2')]
+
+    // ! s is :  ['i1', 'i2', 'i3']
+    // ! result is :  [('i1',), ('i2',), ('i3',), ('i1', 'i2'), ('i1', 'i3'), ('i2', 'i3'), ('i1', 'i2', 'i3')]
+
+    for (int i = 0; i < s.Count - 1; i++)
+    {
+        Tuple<String> _tuple;
+        for (int j = i + 1; j < s.Count; j++)
+        {
+        }
+
+        result.Add(_tuple);
+    }
+
+    // Tuple<String, String> _tuple;
+    foreach (String item in s)
+    {
+        result.Add(new Tuple<string>(item));
+    }
+
+    return result;
 }
 
 String assoc_rules = "";
