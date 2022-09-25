@@ -25,7 +25,7 @@ foreach (var item in order)
 
 C = CustomDictionary.Add(C, itemset_size, order_C);
 
-double min_support = ((double)2 / (double)9);
+double min_support = (double)2 / (double)9;
 double min_confidence = 0.3;
 
 Dictionary<int, List<int>> supp_count_L = new Dictionary<int, List<int>>();
@@ -93,43 +93,41 @@ while (!convergence)
     k++;
 }
 
-List<Tuple<List<String>>> powerset(List<String> s)
-{
-    List<Tuple<List<String>>> result = new List<Tuple<List<String>>>();
-    List<int> r = Enumerable.Range(1, s.Count + 1).ToList(); // ! ??
-
-    // How to do all combinations with items in s count in r
-
-    // ! s is :  ['i1', 'i2']
-    // ! result is :  [('i1',), ('i2',), ('i1', 'i2')]
-
-    // ! s is :  ['i1', 'i2', 'i3']
-    // ! result is :  [('i1',), ('i2',), ('i3',), ('i1', 'i2'), ('i1', 'i3'), ('i2', 'i3'), ('i1', 'i2', 'i3')]
-
-    foreach (String item in s)
-    {
-        result.Add(new Tuple<List<String>>(new List<String>() { item }));
-    }
-
-    for (int i = 0; i < s.Count - 1; i++)
-    {
-        for (int j = i + 1; j < s.Count; j++)
-        {
-            result.Add(new Tuple<List<String>>(new List<String>() { s[i], s[j] }));
-        }
-    }
-    // this makes 2 element combination
-    // add 3 element combinations
-
-    return result;
-}
-
 String assoc_rules = "";
 
 for (int i = 1; i < L.Count; i++)
 {
     for (int j = 0; j < L[i].Count; j++)
     {
-        List<Tuple<List<String>>> s = powerset(L[i][j]);
+        List<List<String>> s = Combination.GetCombinations(L[i][j]);
+        s.RemoveAt(s.Count - 1);
+        // Works fine for now
+        foreach (var item in s)
+        {
+            var S = new List<string>();
+            foreach (var x in item)
+            {
+                S.Add(x);
+            }
+            var X = new List<string>();
+            foreach (var x in L[i][j])
+            {
+                X.Add(x);
+            }
+
+            var X_S = X.Except(S).ToList();
+
+            int sup_x = Count_Occurence.count_occurences(X, transactions);
+            int sup_x_s = Count_Occurence.count_occurences(X_S, transactions);
+            double conf = (double)sup_x / (double)Count_Occurence.count_occurences(S, transactions);
+            double lift = conf / ((double)sup_x_s / (double)transactions.Count);
+
+            if (conf >= min_confidence && sup_x >= min_support)
+            {
+                assoc_rules += Rules.WriteRules(X, X_S, S, conf, sup_x, lift, transactions.Count);
+            }
+        }
     }
 }
+
+System.Console.WriteLine(assoc_rules);
