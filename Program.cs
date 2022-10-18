@@ -7,41 +7,41 @@
     "i5",
 };
 
-String data_path = "data_1.txt";
+String dataPath = "data_1.txt";
 
-List<List<String>> transactions = LoadTransaction.LoadTransactions(data_path, order);
+List<List<String>> transactions = LoadTransaction.LoadTransactions(dataPath, order);
 
-int itemset_size = 1;
+int itemsetSize = 1;
 
 Dictionary<int, List<List<String>>> C = new Dictionary<int, List<List<string>>>();
 Dictionary<int, List<List<String>>> L = new Dictionary<int, List<List<string>>>();
 Dictionary<int, List<List<String>>> Discarded = new Dictionary<int, List<List<string>>>();
 
-List<List<String>> order_C = new List<List<string>>();
+List<List<String>> orderC = new List<List<string>>();
 foreach (var item in order)
 {
-    order_C.Add(new List<String>() { item });
+    orderC.Add(new List<String>() { item });
 }
 
-C = CustomDictionary.Add(C, itemset_size, order_C);
+C = CustomDictionary.Add(C, itemsetSize, orderC);
 
-double min_support = (double)2 / (double)9;
-double min_confidence = 0.3;
+double minSupport = (double)2 / (double)9;
+double minConfidence = 0.3;
 
-Dictionary<int, List<int>> supp_count_L = new Dictionary<int, List<int>>();
+Dictionary<int, List<int>> suppCountL = new Dictionary<int, List<int>>();
 
 List<List<String>> f = new List<List<String>>();
 List<int> sup = new List<int>();
 
-var frequent = Frequent.GetFrequent(C[itemset_size], transactions, min_support, Discarded);
+var frequent = Frequent.GetFrequent(C[itemsetSize], transactions, minSupport, Discarded);
 
 f = frequent.Item1;
 sup = frequent.Item2;
 List<List<String>> new_discarded = frequent.Item3;
 
-Discarded = CustomDictionary.Add(Discarded, itemset_size, new_discarded);
-L = CustomDictionary.Add(L, itemset_size, f);
-supp_count_L = CustomDictionary.Add(supp_count_L, itemset_size, sup);
+Discarded = CustomDictionary.Add(Discarded, itemsetSize, new_discarded);
+L = CustomDictionary.Add(L, itemsetSize, f);
+suppCountL = CustomDictionary.Add(suppCountL, itemsetSize, sup);
 
 void WriteTable(List<List<String>> T, List<int> supp_count)
 {
@@ -57,9 +57,9 @@ void WriteTable(List<List<String>> T, List<int> supp_count)
     System.Console.WriteLine();
 }
 
-WriteTable(L[1], supp_count_L[1]);
+WriteTable(L[1], suppCountL[1]);
 
-int k = itemset_size + 1;
+int k = itemsetSize + 1;
 bool convergence = false;
 
 while (!convergence)
@@ -73,14 +73,14 @@ while (!convergence)
     }
     WriteTable(C[k], temp_sup_count);
 
-    frequent = Frequent.GetFrequent(C[k], transactions, min_support, Discarded);
+    frequent = Frequent.GetFrequent(C[k], transactions, minSupport, Discarded);
     f = frequent.Item1;
     sup = frequent.Item2;
     new_discarded = frequent.Item3;
 
     Discarded = CustomDictionary.Add(Discarded, k, new_discarded);
     L = CustomDictionary.Add(L, k, f);
-    supp_count_L = CustomDictionary.Add(supp_count_L, k, sup);
+    suppCountL = CustomDictionary.Add(suppCountL, k, sup);
     if (L[k].Count == 0)
     {
         convergence = true;
@@ -88,7 +88,7 @@ while (!convergence)
     else
     {
         System.Console.WriteLine("Table L{0}", k);
-        WriteTable(L[k], supp_count_L[k]);
+        WriteTable(L[k], suppCountL[k]);
     }
     k++;
 }
@@ -122,7 +122,7 @@ for (int i = 1; i < L.Count; i++)
             double conf = (double)sup_x / (double)Count_Occurence.count_occurences(S, transactions);
             double lift = conf / ((double)sup_x_s / (double)transactions.Count);
 
-            if (conf >= min_confidence && sup_x >= min_support)
+            if (conf >= minConfidence && sup_x >= minSupport)
             {
                 assoc_rules += Rules.WriteRules(X, X_S, S, conf, sup_x, lift, transactions.Count);
             }
