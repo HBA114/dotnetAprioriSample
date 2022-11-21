@@ -50,9 +50,19 @@ void WriteTable(List<List<String>> T, List<int> supp_count)
     {
         for (int j = 0; j < T[i].Count; j++)
         {
-            Console.Write(" " + T[i][j] + " ");
+            Console.Write(T[i][j] + " ");
         }
-        System.Console.WriteLine(" : " + supp_count[i]);
+        var pos = Console.GetCursorPosition();
+        try
+        {
+            Console.SetCursorPosition(Console.GetCursorPosition().Left + (12 - (T[i].Count * 3)), Console.GetCursorPosition().Top);
+        }
+        catch (ArgumentOutOfRangeException)
+        {
+            System.Console.WriteLine();
+            Console.SetCursorPosition(Console.GetCursorPosition().Left + 1, Console.GetCursorPosition().Top - 1);
+        }
+        Console.WriteLine(" :          " + supp_count[i]);
     }
     System.Console.WriteLine();
 }

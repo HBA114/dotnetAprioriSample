@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/.net_from_py.csproj",
+                "${workspaceFolder}/.net_apriori_sample.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/.net_from_py.csproj",
+                "${workspaceFolder}/.net_apriori_sample.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/.net_from_py.csproj"
+                "${workspaceFolder}/.net_apriori_sample.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
