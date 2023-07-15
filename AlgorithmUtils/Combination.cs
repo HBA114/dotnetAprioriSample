@@ -1,3 +1,5 @@
+namespace dotnetAprioriSample.AlgorithmUtils;
+
 public static class Combination
 {
     public static List<List<string>> GetCombinations(List<string> items)
@@ -6,7 +8,7 @@ public static class Combination
         for (int i = 0; i < items.Count; i++)
         {
             List<List<string>> result = new List<List<string>>();
-            result = GetCombi(items, i, 0, result);
+            result = GetCombination(items, i, 0, result);
             foreach (var item in result)
             {
                 all_res.Add(item);
@@ -14,7 +16,7 @@ public static class Combination
         }
         return all_res;
     }
-    private static List<List<string>> GetCombi(List<string> items, int count, int i, List<List<string>> result)
+    private static List<List<string>> GetCombination(List<string> items, int count, int i, List<List<string>> result)
     {
         int number = CalculateCombinationCount(items.Count)[count];
 
@@ -52,7 +54,7 @@ public static class Combination
             }
             if (result.Count < number)
             {
-                return GetCombi(items, count, i + 1, result);
+                return GetCombination(items, count, i + 1, result);
             }
         }
         return result;
@@ -60,9 +62,9 @@ public static class Combination
 
     static List<int> CalculateCombinationCount(int count)
     {
-        var r_list = Enumerable.Range(1, count);
+        var rList = Enumerable.Range(1, count);
         List<int> result = new List<int>();
-        foreach (int r in r_list)
+        foreach (int r in rList)
         {
             result.Add(CalculateFactorial(count) / (CalculateFactorial(r) * CalculateFactorial(count - r)));
         }

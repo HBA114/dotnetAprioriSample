@@ -1,3 +1,5 @@
+namespace dotnetAprioriSample.Data;
+
 public static class LoadTransaction
 {
     public static List<List<String>> LoadTransactions(String data_path, List<String> order)

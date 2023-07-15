@@ -1,3 +1,5 @@
+namespace dotnetAprioriSample.Utils;
+
 public static class CustomDictionary
 {
     public static Dictionary<int, List<List<String>>> Add(Dictionary<int, List<List<String>>> dict, int i, List<List<String>> list)
